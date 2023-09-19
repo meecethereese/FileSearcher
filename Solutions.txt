@@ -1,0 +1,80 @@
+Solution to Sub-task: Get Path Names
+
+The arrow function returns a promise object that takes a function. That function calls resolve
+function via res argument. In the function passed to promise object, call an asynchronous function
+fs.readdir that reads the path to the directory passed as an argument to getPathNames. Cater to the
+following two cases in the callback function of fs.readdir.
+
+In case of error, return an empty array via resolve function.
+
+If there is no error, take the array of files, each a string, and prepend the current path to
+directory dir to each separated by '/' character.
+
+Our promise resolves an array of paths to files and folders, given the directory does exist.
+Otherwise, it is an empty array.
+
+Solution to Sub-task: Get Nested Path Names
+
+Use an asynchronous function by adding the async token to the function. Make use of recursion to
+recursively traverse further into the directories. For each case, use the getPathNames function to
+get an array of paths in the current directory path. For the two cases, do the following.
+
+Base Case: Return an empty array if there are no files or folders in the current dir.
+
+Recursive Case: Convert each path into a promise object by calling getNestedPathNames function,
+which recurses further into each. Wait for promises to resolve using await and Promise.all method.
+Now, we have exhaustive paths to sub-directories and files in each of them, in an array. All new
+paths are flattened into a single-dimensional array using the reduce method. Finally, return, in a
+single array, the paths to everything in the current directory dir, and the nested directories got
+through recursion.
+
+This function returns all paths to everything inside dir, regardless of how deep into the sub-
+directories, it is in an array.
+
+Solution to Sub-task: Read Files
+
+In this solution, first make the readFiles function asynchronous by adding the async token to the
+function. Then, get all path names in the directory dir utilizing our previous asynchronous
+function getNestedPathNames. Filter out all paths containing the '.txt' extension, using the filter
+and match methods. For reading each file in the respective file paths, use the helper function
+readFile that returns a promise object of the following properties.
+
+Uses asynchronous function fs.readFile
+
+fs.readFile takes a callback function and invokes resolve function with the following values for
+the following cases:
+
+If an error occurs, it resolves an array with file path dir and an empty string.
+
+Otherwise, it resolves an array with file path dir and data argument containing the content of the
+file.
+
+For all text file paths, map the readFile function to convert each into a promise that reads the
+respective files asynchronously. Use Promise.all method and await to wait for all promises to
+resolve and deliver the data for each file path. Finally, return the resolved values. Now, the
+function that asynchronously gives all data for all files in the directory dir!
+
+Solution to Sub-task: Search
+
+Begin by making the search function asynchronous by adding the async token to the function. Next,
+get the file paths and data of all files in the directory dir asynchronously, in a single array.
+Extract all line numbers in which the string token matches for each of the files. Do the following
+steps.
+
+Initialize an empty object to populate later.
+
+Iterate all files and data in the array which we assigned to the data variable, using the forEach
+method. For each file, do the following.
+
+Destructure the element into separate variables for path and content.
+
+Spit the content by '\n' character so in the array of strings each index is the line number.
+
+Iterate each line. See if there is a match for token with the match method. If there is a match,
+then append the index into an array.
+
+If there are lines appended to the array ( a match with token), populate the object obj with key as
+the path of the file and value as the array of line numbers.
+
+By the end of the iterations, we have an object populated with paths of all the satisfying files
+and the line numbers on which the matching was successful. Return this object as our final answer.

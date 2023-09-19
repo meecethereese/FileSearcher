@@ -1,0 +1,212 @@
+Educative.io: JavaScript in Detail: From Beginner to Advanced
+Mini Project #4: File Searcher
+
+Background
+
+Computers contain a lot of data: text, video, even software. With increasing data, it is easy to
+misplace files, especially when using nested folders. The directory’s hierarchy may be somewhat
+like this. Finding a file manually is exhausting, particularly if the folders keep nesting down. It
+is even worse when you forget the name of the file. Then, you have to open every file in every
+folder!
+
+Introduction to file searcher
+
+Nowadays, all operating systems come with the ability to search for files. In Linux, people can use
+commands from a terminal such as find, to search for a file/directory, or tree, to get a birds-eye
+view of the directory’s structure. These commands are great if you know what you’re looking for.
+However, if you’re not totally sure, grep is more useful.
+
+The grep command searches for a certain keyword or pattern in a specified directory and tells which
+files contain the targeted content. It is an ideal command when looking for files or to confirm if
+a text exists in some directory. It can recursively traverse all sub-folders in the directory to
+check the content of files within.
+
+In this project, we work on something similar to grep; we will make our own file searcher in
+JavaScript asynchronously.
+
+Problem Statement
+
+Your local supermarket "Please Buy?" has gone entirely digital. They maintain logs, receipts, and
+everything else on a computer. Despite the IT guy’s best effort, the files and folders are getting
+messy and things get lost. Given this problem, the IT guy wrote a program that gets directories of
+files and the line number within those files for a certain string token. The IT guy implemented a
+functional but slow, synchronous solution. To boost your ego, you decide to re-write the program in
+JavaScript to make it faster via asynchronous programming.
+
+Task
+
+Use your JavaScript knowledge to implement the solution. When given the path to a directory and
+target string token, it should return an object with keys as pathname and values as an array of
+line numbers in which the string token matches. The solution will leverage asynchronous programming.
+
+Keeping the complexity of directories in mind, provide a solution to this task.
+
+Step 1: Get Path Names
+
+In this task, write a function that returns a promise that asynchronously lists paths to all files
+and folders within the directory path in the form of an array. This gives single-level information
+of the directory.
+
+Problem Statement
+
+Complete a function that returns a promise, calling fs.readdir function for a given directory path.
+The function is an asynchronous function that takes the following arguments.
+
+fs.readdir(dirName, callbackfn);
+
+dirName is the directory path in the form of a string and callbackfn is the callback function. The
+callback function takes the following arguments.
+
+function callbackfn(error, files)
+
+The error contains an error caused when reading said directory path and files is an array of
+strings containing file names. The files value is an empty array for when the directory is empty.
+
+For the given directory name dir.
+
+// input
+var dir = 'dir1';
+
+Return an array of all files and folders within the directory dir1 like this.
+
+// output
+["dir1/A", "dir1/B", "dir1/C", "dir1/file1.txt"]
+
+All files and folders prepended dir string with a '/' character in the middle to make it a complete
+path. In case of an error or empty directory, return an empty array [].
+
+Complete function getPathNames that takes a string containing directory pathname dir and returns a
+promise, with an array of paths to folders and files within it, each of string type.
+
+Step Two: Get Nested Path Names
+
+Find all possible paths to files and folders in a given directory. This involves going into sub-
+folders recursively, until all are traversed, finally returning all paths to directories and files
+in a given directory in an array.
+
+Problem statement
+
+Complete an asynchronous function that returns an array of all pathnames to files and folders
+inside a given directory. Use the getPathName function.
+
+For the given directory pathname dir:
+
+// input
+var dir = 'dir1';
+
+Return an array of files and folders within the directory dir. It should exhaustively list nested
+files and folders too.
+
+// output
+["dir1/A", "dir1/B", "dir1/C", "dir1/file1.txt", "dir1/A/D", "dir1/A/file1.txt", "dir1/A/
+file2.txt", "dir1/A/D/F", "dir1/A/D/F/file1.txt", "dir1/B/E", "dir1/B/file1.txt", "dir1/C/
+file1.txt"]
+
+All files and folders prepended dir string with a '/' character in the middle. The same is applied
+to nested directories.
+
+Now, complete an asynchronous function getNestedPathNames that takes a string containing directory
+name dir. It asynchronously returns a promise resolving an array of paths to all folders and files,
+including nested ones, within dir each of string type. This task can be done recursively.
+
+Step 3: Read Files
+
+Because we have sub-directories and file locations, move onto reading all text files. This task
+involves taking a directory and reading its files to return an array of sub-arrays each containing
+the directory name and data of the file.
+
+'root'
+=>
+[
+  ['root/readme.txt',`${dataOf readme.txt}`],
+  ['root/tmp/cache.txt',`${dataOf cache.txt}`],
+  ['root/data/data/fileB.txt',`${dataOf fileB.txt}`]
+]
+
+In the example, we have file directories and the corresponding data contained in them, contained in
+a single array to finally process them for our search.
+
+Task
+
+With the sub-directories and file locations, move onto reading text files. Take a directory and
+read all files to return an array of sub-arrays, each containing the pathname and data of the file.
+
+Problem statement
+
+Complete an asynchronous function that returns an array of sub-arrays, each with file pathname and
+data of the file. Use the getNestedPathNames function. The function uses an asynchronous function
+fs.readFile that takes the following arguments.
+
+fs.readFile(filePath, 'utf8', callbackfn);
+
+filePath is the file path in the form of a string and callbackfn is the callback function. The
+option 'utf8' will read the file in string format. The callback function takes the following
+arguments.
+
+function callbackfn(error, data)
+
+The error contains an error caused by reading that file. data is the content of the file in string
+format.
+
+For the given directory name dir:
+
+// input
+var dir = 'dir1';
+
+Return an array of all file paths and their data within the directory dir. For this task, read the
+files with the '.txt' extension like this.
+
+// output
+[
+  ["dir1/file1.txt","Hello\nWorld"],
+  ["dir1/A/file1.txt","Hello\nWorld"],
+  ["dir1/A/file2.txt","Hello\nWorld\nWorld"],
+  ["dir1/A/D/F/file1.txt","Hello\nI am\nFrom a different\nWorld\n"],
+  ["dir1/B/file1.txt","Hello\nWorld"],
+  ["dir1/C/file1.txt","Hello\nWorld"]
+]
+
+In this example, each sub-array has the first element as the path of the file, and the second is
+the data in the file.
+
+Complete an asynchronous function readFiles that takes a string containing directory pathname dir.
+It then asynchronously reads files in the directory to return an array of sub-arrays; each sub-
+array consists of the file path and data.
+
+Step 4: Search
+
+In this task, use functions from previous parts to search a given string in a directory. The final
+function will return an object containing file paths as keys and a list of line numbers in which
+the query string exists as values.
+
+Problem statement
+
+Complete an asynchronous function that returns an object of all pathnames to files as keys and line
+numbers in an array as values. Only files containing a target string token will add their file
+paths to the object. The token exists in the line numbers that are the values. Use the readFiles
+function to help.
+
+So, for the given directory pathname dir and target string token:
+
+// input
+var dir = 'dir1';
+var token = 'World';
+
+Return an object of all file paths and the line numbers of lines having substring token as follows.
+
+// output
+{
+  "dir1/file1.txt" : [1],
+  "dir1/A/file1.txt" : [1],
+  "dir1/A/file2.txt" : [1, 2],
+  "dir1/A/D/F/file1.txt" : [3],
+  "dir1/B/file1.txt" : [1],
+  "dir1/C/file1.txt" : [1]
+}
+
+There are no entries for files with an empty array of line numbers, files with the token substring,
+in this example. We only list files that have at least one match with the substring token.
+
+Complete an asynchronous function search that takes a string containing directory name dir and a
+string token. This will asynchronously return an object containing file paths as keys and array of
+line numbers in which the query string token exists as values.
