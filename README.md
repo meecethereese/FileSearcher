@@ -4,7 +4,7 @@ Your local supermarket "Please Buy?" has gone entirely digital. They maintain lo
 everything else on a computer. Despite the IT guy’s best effort, the files and folders are getting
 messy and things get lost. Given this problem, the IT guy wrote a program that gets directories of
 files and the line number within those files for a certain string token. The IT guy implemented a
-functional but slow, synchronous solution. To boost your ego, you decide to re-write the program in
+functional, but slow, synchronous solution. To boost your ego, you decide to re-write the program in
 JavaScript to make it faster via asynchronous programming.
 
 Task
